@@ -331,6 +331,73 @@ class DueDateUtilsTest {
         assertEquals("D-1", label)
     }
 
+    @Test
+    fun dueDateLabel_febTwentiethToMarchFirstInLeapYear_returnsDMinus10() {
+        // GIVEN - Today is February 20 of a leap year and the task is due March 1
+        val today = LocalDate.of(2024, 2, 20)
+        val dueDate = LocalDate.of(2024, 3, 1)
+
+        // WHEN - Build the label
+        val label = dueDateLabel(dueDate, today, isCompleted = false)
+
+        // THEN - February 29 is counted
+        assertEquals("D-10", label)
+    }
+
+    @Test
+    fun dueDateLabel_febTwentiethToMarchFirstInNonLeapYear_returnsDMinus9() {
+        // GIVEN - The same dates in a non-leap year
+        val today = LocalDate.of(2025, 2, 20)
+        val dueDate = LocalDate.of(2025, 3, 1)
+
+        // WHEN - Build the label
+        val label = dueDateLabel(dueDate, today, isCompleted = false)
+
+        // THEN - The span is one day shorter
+        assertEquals("D-9", label)
+    }
+
+    // Edge cases: one whole year across a leap year
+
+    @Test
+    fun dueDateLabel_oneYearAheadAcrossLeapYear_returnsDMinus366() {
+        // GIVEN - The task is due one year after January 1 of a leap year
+        val today = LocalDate.of(2024, 1, 1)
+        val dueDate = LocalDate.of(2025, 1, 1)
+
+        // WHEN - Build the label
+        val label = dueDateLabel(dueDate, today, isCompleted = false)
+
+        // THEN - The year has 366 days
+        assertEquals("D-366", label)
+    }
+
+    @Test
+    fun dueDateLabel_oneYearAheadAcrossNonLeapYear_returnsDMinus365() {
+        // GIVEN - The task is due one year after January 1 of a non-leap year
+        val today = LocalDate.of(2025, 1, 1)
+        val dueDate = LocalDate.of(2026, 1, 1)
+
+        // WHEN - Build the label
+        val label = dueDateLabel(dueDate, today, isCompleted = false)
+
+        // THEN - The year has 365 days
+        assertEquals("D-365", label)
+    }
+
+    @Test
+    fun dueDateLabel_oneYearOverdueAcrossLeapYear_returnsDPlus366() {
+        // GIVEN - The task was due one year before today, across a leap year
+        val today = LocalDate.of(2025, 1, 1)
+        val dueDate = LocalDate.of(2024, 1, 1)
+
+        // WHEN - Build the label
+        val label = dueDateLabel(dueDate, today, isCompleted = false)
+
+        // THEN - The overdue span has 366 days
+        assertEquals("D+366", label)
+    }
+
     // Edge cases: one whole month ahead
 
     @Test

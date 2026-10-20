@@ -67,6 +67,16 @@
     - Tip: Given today = 2028-02-28, dueDate = 2028-03-01, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D-2"
   - Same span in a non-leap year has no February 29 to count. `[Unit]`
     - Tip: Given today = 2027-02-28, dueDate = 2027-03-01, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D-1"
+  - February 20 to March 1 in a leap year counts February 29. `[Unit]`
+    - Tip: Given today = 2024-02-20, dueDate = 2024-03-01, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D-10"
+  - The same dates in a non-leap year are one day shorter. `[Unit]`
+    - Tip: Given today = 2025-02-20, dueDate = 2025-03-01, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D-9"
+  - One whole year ahead across a leap year counts 366 days. `[Unit]`
+    - Tip: Given today = 2024-01-01, dueDate = 2025-01-01, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D-366"
+  - One whole year ahead across a non-leap year counts 365 days. `[Unit]`
+    - Tip: Given today = 2025-01-01, dueDate = 2026-01-01, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D-365"
+  - One whole year overdue across a leap year counts 366 days. `[Unit]`
+    - Tip: Given today = 2025-01-01, dueDate = 2024-01-01, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D+366"
   - One whole month ahead, one day short: due one day before the same day-of-month next month. `[Unit]`
     - Tip: Given today = 2026-10-15, dueDate = 2026-11-14, isCompleted = false / When dueDateLabel(dueDate, today, isCompleted) is called / Then it returns "D-30"
   - One whole month ahead, at the boundary: due on the same day-of-month next month. `[Unit]`
